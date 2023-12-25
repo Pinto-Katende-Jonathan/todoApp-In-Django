@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="title">Todo App with Django</h1>
+
+    <form action={% url 'create_todo'%} method="post" class="add-todo">
+        {% csrf_token %}
+        <input type="text" name="todo-title" placeholder="Entrez le titre de la tache" class="todo-title">
+        <input type="submit" value="Submit">
+    </form>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Completed</th>
+                <th colspan="2" class="table-action">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for todo in todos %}
+                <tr>
+                    <td>#{{todo.id}}</td>
+                    <td>{{todo.title}}</td>
+                    <td><input type="checkbox" {% if todo.completed %} checked {% endif %}></td>
+                    <td><a href="{% url 'delete_todo' todo.id %}" class="delete-todo">Delete</a></td>
+                    <td><a href="{% url 'update_todo' todo.id %}" class="edit-todo">Edit</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
